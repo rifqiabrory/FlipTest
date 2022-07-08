@@ -5,7 +5,7 @@ import { useClipboard } from '@react-native-clipboard/clipboard';
 import Utilities, { Colors, Strings, ARROW_DOWN_ICON, ARROW_RIGHT_ICON, COPY_ICON } from "../../utilities";
 import { useTransactionDetail, useToggle } from "../../hooks";
 import { Divider, Visibility } from "../../components";
-import { StackParams } from "../../types";
+import type { StackParams } from "../../types";
 import styles from "../../styles";
 
 /**
@@ -22,7 +22,7 @@ const TransactionDetail: React.FC<Props> = ({ route }) => {
      */
     const { transactionID } = route.params;
     const [visible, toggle] = useToggle(false);
-    const [copy, setCopiedValue] = useClipboard();
+    const [_, setCopiedValue] = useClipboard();
     const { transaction } = useTransactionDetail(transactionID);
 
     /**

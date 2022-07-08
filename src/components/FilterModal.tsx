@@ -5,7 +5,7 @@ import { View, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { onChange, transactions } from '../features/transaction-list/transactionsSlice';
 import { Colors, FilterOptions } from '../utilities';
 import { AppDispatch } from '../app/store';
-import { StackParams } from '../types';
+import type { StackParams } from '../types';
 import RadioGroup from './RadioButtonGroup';
 const { width } = Dimensions.get('screen');
 

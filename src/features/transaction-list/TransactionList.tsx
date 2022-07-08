@@ -3,8 +3,8 @@ import { Text, Pressable, FlatList, ActivityIndicator, ListRenderItemInfo } from
 import { useDispatch, useSelector } from "react-redux";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { retriveTransactions, transactions } from "./transactionsSlice";
+import type { StackParams, Transaction } from "../../types";
 import { SearchBar, ErrorState } from "../../components";
-import { StackParams, Transaction } from "../../types";
 import { Strings } from "../../utilities";
 import { AppDispatch } from "../../app/store";
 import { ListItem } from "./ListItem";

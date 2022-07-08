@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TransactionDetail from './features/transaction-detail/TransactionDetail';
 import TransactionList from './features/transaction-list/TransactionList';
 import { FilterModal } from './components';
-import { StackParams } from './types';
+import type { StackParams } from './types';
 import { Colors } from './utilities';
 
 /**

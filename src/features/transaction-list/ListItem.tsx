@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, Image, Pressable, StyleSheet } from 'react-native';
 import Utilities, { ARROW_RIGHT_ICON, Colors, StatusColor, StatusChip } from '../../utilities';
-import { Transaction } from '../../types';
+import type { Transaction } from '../../types';
 
 /**
  * List Item Props's Interface

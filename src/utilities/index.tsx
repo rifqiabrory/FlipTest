@@ -1,5 +1,5 @@
 import { FilterOptions } from './Constant';
-import { Transaction } from '../types';
+import type { Transaction } from '../types';
 
 /**
  * Currency Options Interface
@@ -118,7 +118,7 @@ class Utilities {
     const date = datetime.split(" ")[0];
     const time = datetime.split(" ")[1];
     const bits = date.split(/\D/) as any;
-    const datetimevalue = new Date(bits[0], --bits[1], bits[2]); /* if you change format of datetime which is passed to this function, you need to change bits e.x ( bits[0], bits[1], bits[2 ]) position as per date, months and year it represent bits array.*/
+    const datetimevalue = new Date(bits[0], --bits[1], bits[2]);
     const day = datetimevalue.getDate();
     const monthIndex = datetimevalue.getMonth();
     const year = datetimevalue.getFullYear();

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TransactionServices } from "../../services";
 import Utilities, { Strings } from "../../utilities";
-import { Transaction } from "../../types";
+import type { Transaction } from "../../types";
 import type { RootState } from '../../app/store';
 
 /**
@@ -75,7 +75,7 @@ const transactionsSlice = createSlice({
                 state.loading = false;
                 state.dataSource = payload;
             }),
-            builder.addCase(retriveTransactions.rejected, (state, arg) => {
+            builder.addCase(retriveTransactions.rejected, (state) => {
                 state.error = Strings.ERROR_MESSAGE;
                 state.loading = false;
             })

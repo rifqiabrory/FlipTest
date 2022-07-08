@@ -4,7 +4,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
 import { onChange, transactions } from '../features/transaction-list/transactionsSlice';
 import { Colors, SEARCH_ICON, ARROW_DOWN_ICON, Strings } from '../utilities';
-import { StackParams } from '../types';
+import type { StackParams } from '../types';
 import { AppDispatch } from '../app/store';
 import styles from '../styles';
 
@@ -67,8 +67,6 @@ const searchBarStyles = StyleSheet.create({
         backgroundColor: Colors.white,
         paddingVertical: 10,
         paddingHorizontal: 5,
-        // marginHorizontal: 14,
-        // borderRadius: 8
     },
     label: {
         fontWeight: '600',
