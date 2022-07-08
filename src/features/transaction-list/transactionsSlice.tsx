@@ -1,6 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getAllTransactions } from "../../services/transactions";
 import { Transaction } from "../../types";
+import Utilities from "../../utilities";
 import type { RootState } from '../../app/store';
 
 interface TransactionState {
@@ -27,33 +28,19 @@ export const retriveTransactions = createAsyncThunk('transactions/all', async (_
     }
 })
 
+export const transactions = (state: RootState) => {
+    const { keyword, filter, ...rest } = state.transactions;
+    const dataSource = Utilities.filterData(rest.dataSource, filter, keyword);
+    return {
+        ...state.transactions,
+        dataSource
+    }
+};
+
 const transactionsSlice = createSlice({
     name: "transactions",
     initialState,
     reducers: {
-        onFetching: (state) => {
-            const data = state.dataSource.sort((a, b) => {
-                switch(state.filter) {
-                    case 'Nama A-Z': {
-                        if(a.beneficiary_name < b.beneficiary_name) { return -1; }
-                        if(a.beneficiary_name > b.beneficiary_name) { return 1; }
-                        return 0
-                    }
-                    case 'Nama Z-A': {
-                        if(a.beneficiary_name < b.beneficiary_name) { return 1; }
-                        if(a.beneficiary_name > b.beneficiary_name) { return -1; }
-                        return 0
-                    }
-                    default: {
-                        return 0;
-                    }
-                }
-            })
-            return {
-                ...state,
-                dataSource: data
-            }
-        },
         onChange: (state, { payload }: PayloadAction<{
             key: string,
             value: string
@@ -79,6 +66,5 @@ const transactionsSlice = createSlice({
     }
 });
 
-export const { onFetching, onChange } = transactionsSlice.actions;
-export const transactions = (state: RootState) => state.transactions;
+export const { onChange } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

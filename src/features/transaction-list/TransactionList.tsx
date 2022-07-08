@@ -5,6 +5,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { retriveTransactions, transactions } from "./transactionsSlice";
 import { SearchBar, ListItem, Error } from "../../components";
 import { StackParams, Transaction } from "../../types";
+import { NO_DATA_AVAILABLE, RETRY } from "../../utilities";
 import { AppDispatch } from "../../app/store";
 import styles from '../../styles';
 
@@ -19,11 +20,11 @@ const TransactionList = ({ route, navigation }: Props) => {
     }, [route])
 
     const _renderItems = ({ item }: ListRenderItemInfo<Transaction>) => {
-        return <ListItem {...{item}} onPressItem={() => navigation.navigate('TransactionDetail', { transaction: item })} />
+        return <ListItem {...{item}} onPressItem={() => navigation.navigate('TransactionDetail', { transactionID: item.id })} />
     }
 
     if(loading) {
-        return <ActivityIndicator size="large" style={styles.loading} />
+        return <ActivityIndicator size="small" style={styles.loading} />
     }
     
     if(error){
@@ -32,7 +33,7 @@ const TransactionList = ({ route, navigation }: Props) => {
                 <Pressable style={styles.retryButtton} onPress={() => {
                     dispatch(retriveTransactions())
                 }}>
-                    <Text style={styles.retryLabel}>Retry</Text>
+                    <Text style={styles.retryLabel}>{RETRY}</Text>
                 </Pressable>
             </Error>
         )
@@ -52,7 +53,7 @@ const TransactionList = ({ route, navigation }: Props) => {
             contentContainerStyle={{ paddingHorizontal: 8 }}
             ListHeaderComponentStyle={{ marginHorizontal: -8 }}
             ListHeaderComponent={SearchBar}
-            ListEmptyComponent={<Error message="No data available." />}
+            ListEmptyComponent={<Error message={NO_DATA_AVAILABLE} />}
         />
     )
 }

@@ -18,10 +18,7 @@ export interface Transaction {
 export type StackParams = {
     Transaction: undefined,
     TransactionDetail: {
-        transaction: Transaction
+        transactionID: string
     }
-    SortModal: {
-        filter: string,
-        onFilterSeleted: (text: string) => void
-    }
+    SortModal: undefined
 };

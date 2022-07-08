@@ -18,9 +18,7 @@ const Main = () => {
             headerShown: false,
             animation: 'fade',
             presentation: 'transparentModal',
-        }} initialParams={{
-          filter: 'Urutkan',
-        }}/>
+        }} />
       </Stack.Group>
     </Stack.Navigator>
   );

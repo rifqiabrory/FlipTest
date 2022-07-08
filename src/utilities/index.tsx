@@ -1,3 +1,5 @@
+import { Transaction } from '../types';
+
 /**
  * Currency Options Interface
  */
@@ -17,6 +19,40 @@ export interface CurrencyOptions {
  * Utilities Class
  */
 class Utilities {
+
+   /**
+   * Filter Function
+   * @param dataSource - Array<Transaction>
+   * @param filterBy - string
+   * @param keyword - string
+   */
+  static filterData = (dataSource: Array<Transaction>, filterBy: string, keyword: string) => {
+    return dataSource.filter(item => {
+      return (item.beneficiary_name.toLowerCase().indexOf(keyword.toLowerCase()) > -1 ||
+      item.sender_bank.toLowerCase().indexOf(keyword.toLowerCase()) > -1 ||
+      item.beneficiary_bank.toLowerCase().indexOf(keyword.toLowerCase()) > -1 ||
+      item.amount.toString().indexOf(keyword.toLowerCase()) > -1);
+    }).sort((a, b) => {
+      switch(filterBy) {
+          case 'Nama A-Z': {
+              return a.beneficiary_name > b.beneficiary_name ? 1 : -1;
+          }
+          case 'Nama Z-A': {
+              return a.beneficiary_name > b.beneficiary_name ? -1 : 1;
+          }
+          case 'Tanggal Terbaru': {
+              return a.created_at > b.created_at ? 1 : -1;
+          }
+          case 'Tanggal Terlama': {
+              return a.created_at > b.created_at ? -1 : 1;
+          }
+          default: {
+              return 1
+          }
+      }
+    })
+  }
+
   /**
    * Currency Format Function
    * @param value - string
@@ -34,7 +70,7 @@ class Utilities {
       delimiter = '.',
       ignoreNegative,
       showPositiveSign,
-      prefix,
+      prefix = 'Rp',
       suffix = ''
     } = options || {};
 
@@ -56,7 +92,6 @@ class Utilities {
     if (!!precision && decimals) {
       formattedNumber += separator + decimals;
     }
-
     return `${prefix}${sign}${formattedNumber}${suffix}`
   }
 
@@ -93,8 +128,10 @@ class Utilities {
   }
 }
 
-
+/**
+ * Exports All Modules
+ */
+export { FilterOptions, NO_DATA_AVAILABLE, RETRY } from './Constant';
 export { ARROW_DOWN_ICON, ARROW_RIGHT_ICON, COPY_ICON, SEARCH_ICON } from './Icons';
 export { Colors } from './Colors';
-export { FilterOptions } from './Constant';
 export default Utilities;

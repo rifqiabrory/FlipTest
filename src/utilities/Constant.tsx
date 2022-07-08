@@ -1,5 +1,7 @@
 import { option } from "./../components/RadioGroup";
 
+export const NO_DATA_AVAILABLE = "No data available.";
+export const RETRY = "Retry";
 export const FilterOptions: option[] = [
     {
         value: 'Urutkan',

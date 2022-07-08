@@ -2,41 +2,25 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
-import { onChange, onFetching, transactions } from '../features/transaction-list/transactionsSlice';
+import { onChange, transactions } from '../features/transaction-list/transactionsSlice';
 import { Colors, SEARCH_ICON, ARROW_DOWN_ICON } from '../utilities';
 import { StackParams } from '../types';
 import { AppDispatch } from '../app/store';
 import styles from '../styles';
 
 const SearchBar: React.FC = () => {
-    const { filter, keyword } = useSelector(transactions);
     const dispatch = useDispatch<AppDispatch>()
-
+    const { filter, keyword } = useSelector(transactions);
     const navigation = useNavigation<NavigationProp<StackParams>>();
 
     const _onChangeText = useCallback((keyword: string) => {
-        dispatch(onChange({
-            key: 'keyword',
-            value: keyword
-        }));
+        dispatch(onChange({ key: 'keyword', value: keyword }));
     }, [keyword])
 
-    const onFilterSeleted = useCallback((filter: string) => {
-        dispatch(onChange({
-            key: 'filter',
-            value: filter
-        }));
-        dispatch(onFetching());
-    }, [filter]);
-
     const _onOpenFilter = useCallback(() => {
-        navigation.navigate('SortModal', { filter, onFilterSeleted })
-    }, [filter]);
+        navigation.navigate('SortModal')
+    }, []);
 
-    const _onSearching = useCallback(() => {
-        dispatch(onFetching());
-    }, [keyword]);
-    
     return (
         <View style={searchBarStyles.container}>
             <View style={searchBarStyles.wrapper}>
@@ -48,7 +32,6 @@ const SearchBar: React.FC = () => {
                     placeholderTextColor={Colors.grey}
                     returnKeyType="search"
                     returnKeyLabel="Cari"
-                    onSubmitEditing={_onSearching}
                 />
             </View>
             <Pressable style={searchBarStyles.wrapper} onPress={_onOpenFilter}>

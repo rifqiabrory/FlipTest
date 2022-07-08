@@ -1,19 +1,24 @@
 import React, { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { View, Pressable, StyleSheet, Dimensions } from 'react-native';
-import RadioGroup from './RadioGroup';
-import { StackParams } from '../types';
+import { onChange, transactions } from '../features/transaction-list/transactionsSlice';
 import { Colors, FilterOptions } from '../utilities';
-type Props = NativeStackScreenProps<StackParams, 'SortModal'>
+import { AppDispatch } from '../app/store';
+import { StackParams } from '../types';
+import RadioGroup from './RadioGroup';
 const { width } = Dimensions.get('screen');
 
-const SortModal: React.FC<Props> = ({ route, navigation }) => {
-    const { filter, onFilterSeleted } = route.params;
+type Props = NativeStackScreenProps<StackParams, 'SortModal'>
+
+const SortModal: React.FC<Props> = ({ navigation }) => {
+    const { filter } = useSelector(transactions);
+    const dispatch = useDispatch<AppDispatch>()
     
     const _onChange = useCallback((value: string) => {
         navigation.goBack();
-        onFilterSeleted(value);
-    }, []);
+        dispatch(onChange({ key: 'filter', value}));
+    }, [filter]);
 
     return (
         <View style={styles.container}>
