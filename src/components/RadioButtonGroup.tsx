@@ -5,7 +5,7 @@ import RadioButton from './RadioButton'
 /**
  * Option Interface
  */
-export interface option {
+export interface Option {
   value: string,
   label: string,
 }
@@ -14,8 +14,8 @@ export interface option {
  * Radio Button Group Props's Interface
  */
 export interface RadioButtonGroupProps {
-  options: Array<option>,
-  activeButton: string,
+  value: string,
+  options: Array<Option>,
   onChange: Function,
   containerStyle?: ViewStyle,
   buttonStyle?: ViewStyle,
@@ -26,18 +26,15 @@ export interface RadioButtonGroupProps {
 /**
  * Radio Button Group Component
  */
-const RadioButtonGroup: React.FC<RadioButtonGroupProps> = (props) => {
+const RadioButtonGroup: React.FC<RadioButtonGroupProps> = ({ containerStyle, options, ...rest }) => {
   return (
-    <View style={props.containerStyle}>
-      {props.options.map((data) => {
+    <View style={containerStyle}>
+      {options.map((option: Option) => {
         return (
           <RadioButton
-            key={data.value}
-            label={data.label}
-            activeButton={props.activeButton}
-            buttonStyle={props.buttonStyle}
-            onChange={props.onChange}
-            radioSize={props.radioSize}
+            {...rest}
+            key={option.value}
+            option={option}
           />
         )
       })}

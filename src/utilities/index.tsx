@@ -97,7 +97,7 @@ class Utilities {
   }
 
   /**
-  * Currency Format Function
+  * Parse DateTime Method
   * @param datetime - string
   */
   static parseDateTime = (datetime: string) => {

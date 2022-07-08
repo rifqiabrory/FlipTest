@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { Text, View, Image, TextInput, Pressable, StyleSheet } from 'react-native';
 import { onChange, transactions } from '../features/transaction-list/transactionsSlice';
-import { Colors, SEARCH_ICON, ARROW_DOWN_ICON, Strings } from '../utilities';
+import { Colors, SEARCH_ICON, ARROW_DOWN_ICON, Strings, FilterOptions } from '../utilities';
 import type { StackParams } from '../types';
 import { AppDispatch } from '../app/store';
 import styles from '../styles';
@@ -38,7 +38,7 @@ const SearchBar: React.FC = () => {
 
     return (
         <View style={searchBarStyles.container}>
-            <View style={searchBarStyles.wrapper}>
+            <View style={[searchBarStyles.wrapper, { flex: 1}]}>
                 <Image source={SEARCH_ICON} style={[styles.icon, { marginHorizontal: 5 }]} />
                 <TextInput
                     value={keyword}
@@ -47,10 +47,12 @@ const SearchBar: React.FC = () => {
                     placeholderTextColor={Colors.grey}
                     returnKeyType="search"
                     returnKeyLabel="Cari"
+                    clearButtonMode='while-editing'
+                    style={{flex: 1, marginRight: 5 }}
                 />
             </View>
             <Pressable style={searchBarStyles.wrapper} onPress={_onOpenFilter}>
-                <Text style={searchBarStyles.label}>{filter}</Text>
+                <Text style={searchBarStyles.label}>{filter.label}</Text>
                 <Image source={ARROW_DOWN_ICON} style={[styles.icon, { tintColor: Colors.warm }]} />
             </Pressable>
         </View>

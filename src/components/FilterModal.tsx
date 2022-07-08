@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { View, Pressable, StyleSheet, Dimensions } from 'react-native';
 import { onChange, transactions } from '../features/transaction-list/transactionsSlice';
+import RadioGroup, { Option } from './RadioButtonGroup';
 import { Colors, FilterOptions } from '../utilities';
 import { AppDispatch } from '../app/store';
 import type { StackParams } from '../types';
-import RadioGroup from './RadioButtonGroup';
 const { width } = Dimensions.get('screen');
 
 /**
@@ -29,16 +29,16 @@ const FilterModal: React.FC<Props> = ({ navigation }) => {
      * @description Update selected filter value
      * @param value - string
      */
-    const _onChange = useCallback((value: string) => {
+    const _onChange = useCallback((option: Option) => {
         navigation.goBack();
-        dispatch(onChange({ key: 'filter', value }));
+        dispatch(onChange({ key: 'filter', value: option }));
     }, [filter]);
 
     return (
         <View style={styles.container}>
             <Pressable style={styles.overlay} onPress={navigation.goBack} />
             <View style={styles.box}>
-                <RadioGroup activeButton={filter} options={FilterOptions} onChange={_onChange} buttonStyle={styles.buttonItem} />
+                <RadioGroup value={filter.value} options={FilterOptions} onChange={_onChange} buttonStyle={styles.buttonItem} />
             </View>
         </View>
     )

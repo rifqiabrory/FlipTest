@@ -5,9 +5,9 @@ import { transactions } from '../features/transaction-list/transactionsSlice';
 
 /**
  * useTransactionDetail Hook's
- * @param transactioinID - boolean
+ * @param transactionID - boolean
  */
-export const useTransactionDetail = (transactioinID: string) => {
+export const useTransactionDetail = (transactionID: string) => {
     /**
      * Hook's
      */
@@ -19,7 +19,7 @@ export const useTransactionDetail = (transactioinID: string) => {
      * @description Find transaction by transaction id
      */
     useEffect(() => {
-        const result = dataSource.find(({ id }: Transaction) => id === transactioinID)
+        const result = dataSource.find(({ id }: Transaction) => id === transactionID)
         setTransaction(result);
     }, []);
 

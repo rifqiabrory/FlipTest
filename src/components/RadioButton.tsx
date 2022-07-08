@@ -1,15 +1,16 @@
 import React from 'react'
 import { Text, View, ViewStyle, TextStyle, StyleSheet, TouchableOpacity } from 'react-native'
+import { Option } from './RadioButtonGroup'
 import { Colors } from '../utilities'
 
 /**
  * Radio Button Props's Interface
  */
 export interface RadioButtonProps {
-    label: string,
+    value: string,
+    option: Option,
     onChange: Function,
     buttonStyle?: ViewStyle,
-    activeButton: string,
     labelStyle?: TextStyle,
     radioSize?: number
 }
@@ -21,14 +22,14 @@ const RadioButton: React.FC<RadioButtonProps> = (props) => {
     return (
         <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => props.onChange(props.label)}
+            onPress={() => props.onChange(props.option)}
             style={[radioButtonStyles.buttonStyle, props.buttonStyle]}>
             <View style={[radioButtonStyles.radio, props.radioSize ? { width: props.radioSize, height: props.radioSize, borderRadius: props.radioSize } : null]}>
-                {props.activeButton === props.label ? (
+                {props.value === props.option.value ? (
                     <View style={[radioButtonStyles.fill, props.radioSize ? { width: props.radioSize / 1.6, height: props.radioSize / 1.6, borderRadius: props.radioSize } : null]} />
                 ) : null}
             </View>
-            <Text style={radioButtonStyles.label}>{props.label}</Text>
+            <Text style={radioButtonStyles.label}>{props.option.label}</Text>
         </TouchableOpacity>
     )
 }

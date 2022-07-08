@@ -1,4 +1,4 @@
-import { option } from "../components/RadioButtonGroup";
+import { Option } from "../components/RadioButtonGroup";
 import { Colors } from "./Colors";
 
 /**
@@ -37,25 +37,25 @@ export const StatusChip = {
 /**
  * Filter Options Data
  */
-export const FilterOptions: option[] = [
+export const FilterOptions: Option[] = [
     {
-        value: 'Urutkan',
+        value: 'urutkan',
         label: 'Urutkan'
     },
     {
-        value: 'Nama A-Z',
+        value: 'nama_az',
         label: 'Nama A-Z'
     },
     {
-        value: 'Nama Z-A',
+        value: 'nama_za',
         label: 'Nama Z-A'
     },
     {
-        value: 'Tanggal Terbaru',
+        value: 'tanggal_terbaru',
         label: 'Tanggal Terbaru'
     },
     {
-        value: 'Tanggal Terlama',
+        value: 'tanggal_terlama',
         label: 'Tanggal Terlama'
     },
 ]

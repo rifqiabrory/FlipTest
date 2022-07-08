@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Option } from "../../components/RadioButtonGroup";
 import { TransactionServices } from "../../services";
-import Utilities, { Strings } from "../../utilities";
+import Utilities, { FilterOptions, Strings } from "../../utilities";
 import type { Transaction } from "../../types";
 import type { RootState } from '../../app/store';
 
@@ -10,18 +11,18 @@ import type { RootState } from '../../app/store';
 interface TransactionState {
     dataSource: Array<Transaction>,
     keyword: string,
-    filter: string,
+    filter: Option,
     loading: boolean,
     error?: string
 }
 
 /**
- * Transactions Initial State
+ * Transaction Initial State
  */
 const initialState: TransactionState = {
     dataSource: [],
     keyword: '',
-    filter: 'Urutkan',
+    filter: FilterOptions[0],
     loading: true,
 }
 
@@ -41,11 +42,11 @@ export const retriveTransactions = createAsyncThunk('transactions/all', async (_
  * Transactions Selector Method
  * @param state - RootState
  */
-export const transactions = (state: RootState) => {
-    const { keyword, filter, ...rest } = state.transactions;
-    const dataSource = Utilities.filterData(rest.dataSource, filter, keyword);
+export const transactions = ({ transactions } : RootState) => {
+    const { keyword, filter, ...rest } = transactions;
+    const dataSource = Utilities.filterData(rest.dataSource, filter.value, keyword);
     return {
-        ...state.transactions,
+        ...transactions,
         dataSource
     }
 };
@@ -59,7 +60,7 @@ const transactionsSlice = createSlice({
     reducers: {
         onChange: (state, { payload }: PayloadAction<{
             key: string,
-            value: string
+            value: any
         }>) => {
             return {
                 ...state,
@@ -71,14 +72,14 @@ const transactionsSlice = createSlice({
         builder.addCase(retriveTransactions.pending, (state) => {
             state.loading = true;
         }),
-            builder.addCase(retriveTransactions.fulfilled, (state, { payload }: PayloadAction<Array<Transaction>>) => {
-                state.loading = false;
-                state.dataSource = payload;
-            }),
-            builder.addCase(retriveTransactions.rejected, (state) => {
-                state.error = Strings.ERROR_MESSAGE;
-                state.loading = false;
-            })
+        builder.addCase(retriveTransactions.fulfilled, (state, { payload }: PayloadAction<Array<Transaction>>) => {
+            state.loading = false;
+            state.dataSource = payload;
+        }),
+        builder.addCase(retriveTransactions.rejected, (state) => {
+            state.loading = false;
+            state.error = Strings.ERROR_MESSAGE;
+        })
     }
 });
 
