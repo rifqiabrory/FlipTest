@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from './utilities';
 
+/**
+ * Global's Stylesheet
+ */
 export default StyleSheet.create({
     container: {
         flex: 1,
@@ -29,5 +32,25 @@ export default StyleSheet.create({
         letterSpacing: 0.2,
         textTransform: 'uppercase',
         color: Colors.white
+    },
+    hide: { 
+        opacity: 0, 
+        display: 'none'
+    },
+    divider: {
+        height: 0.25, 
+        backgroundColor: Colors.softGrey
+    },
+    errorContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: Colors.primary
+    },
+    errorText: {
+        paddingTop: 25,
+        fontSize: 14,
+        fontWeight: '400',
+        color: Colors.grey
     }
 })
