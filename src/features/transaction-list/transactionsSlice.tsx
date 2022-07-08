@@ -1,9 +1,12 @@
-import { createAsyncThunk, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getAllTransactions } from "../../services/transactions";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { TransactionServices } from "../../services";
+import Utilities, { Strings } from "../../utilities";
 import { Transaction } from "../../types";
-import Utilities from "../../utilities";
 import type { RootState } from '../../app/store';
 
+/**
+ * Transaction State Interface
+ */
 interface TransactionState {
     dataSource: Array<Transaction>,
     keyword: string,
@@ -12,22 +15,32 @@ interface TransactionState {
     error?: string
 }
 
-const initialState: TransactionState  = {
+/**
+ * Transactions Initial State
+ */
+const initialState: TransactionState = {
     dataSource: [],
     keyword: '',
     filter: 'Urutkan',
     loading: true,
 }
 
+/**
+ * Retrive Transactions Method
+ */
 export const retriveTransactions = createAsyncThunk('transactions/all', async (_, { rejectWithValue }) => {
     try {
-        const transactions = await getAllTransactions()
+        const transactions = await TransactionServices.getAllTransactions()
         return transactions;
     } catch (error: any) {
         return rejectWithValue(error.message);
     }
 })
 
+/**
+ * Transactions Selector Method
+ * @param state - RootState
+ */
 export const transactions = (state: RootState) => {
     const { keyword, filter, ...rest } = state.transactions;
     const dataSource = Utilities.filterData(rest.dataSource, filter, keyword);
@@ -37,6 +50,9 @@ export const transactions = (state: RootState) => {
     }
 };
 
+/**
+ * Transactions Slice Method
+ */
 const transactionsSlice = createSlice({
     name: "transactions",
     initialState,
@@ -55,16 +71,19 @@ const transactionsSlice = createSlice({
         builder.addCase(retriveTransactions.pending, (state) => {
             state.loading = true;
         }),
-        builder.addCase(retriveTransactions.fulfilled, (state, { payload }: PayloadAction<Array<Transaction>>) => {
-            state.loading = false;
-            state.dataSource = payload;
-        }),
-        builder.addCase(retriveTransactions.rejected, (state, arg) => {
-            state.error = "Something want wrong!";
-            state.loading = false;
-        })
+            builder.addCase(retriveTransactions.fulfilled, (state, { payload }: PayloadAction<Array<Transaction>>) => {
+                state.loading = false;
+                state.dataSource = payload;
+            }),
+            builder.addCase(retriveTransactions.rejected, (state, arg) => {
+                state.error = Strings.ERROR_MESSAGE;
+                state.loading = false;
+            })
     }
 });
 
+/**
+ * Export Modules
+ */
 export const { onChange } = transactionsSlice.actions;
 export default transactionsSlice.reducer;

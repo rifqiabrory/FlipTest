@@ -1,5 +1,8 @@
 type Status = "SUCCESS" | "PENDING";
 
+/**
+ * Transaction Interface
+ */
 export interface Transaction {
     id: string,
     amount: number
@@ -15,10 +18,13 @@ export interface Transaction {
     fee: number
 }
 
+/**
+ * Stack Params Interface
+ */
 export type StackParams = {
     Transaction: undefined,
     TransactionDetail: {
         transactionID: string
     }
-    SortModal: undefined
+    FilterModal: undefined
 };

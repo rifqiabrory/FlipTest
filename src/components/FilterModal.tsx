@@ -6,18 +6,32 @@ import { onChange, transactions } from '../features/transaction-list/transaction
 import { Colors, FilterOptions } from '../utilities';
 import { AppDispatch } from '../app/store';
 import { StackParams } from '../types';
-import RadioGroup from './RadioGroup';
+import RadioGroup from './RadioButtonGroup';
 const { width } = Dimensions.get('screen');
 
-type Props = NativeStackScreenProps<StackParams, 'SortModal'>
+/**
+ * Filter Modal Props
+ */
+type Props = NativeStackScreenProps<StackParams, 'FilterModal'>
 
-const SortModal: React.FC<Props> = ({ navigation }) => {
+/**
+ * Filter Modal Component
+ */
+const FilterModal: React.FC<Props> = ({ navigation }) => {
+    /**
+     * Hook's
+     */
     const { filter } = useSelector(transactions);
     const dispatch = useDispatch<AppDispatch>()
-    
+
+    /**
+     * onChange Method
+     * @description Update selected filter value
+     * @param value - string
+     */
     const _onChange = useCallback((value: string) => {
         navigation.goBack();
-        dispatch(onChange({ key: 'filter', value}));
+        dispatch(onChange({ key: 'filter', value }));
     }, [filter]);
 
     return (
@@ -30,6 +44,9 @@ const SortModal: React.FC<Props> = ({ navigation }) => {
     )
 }
 
+/**
+ * Filter Modal Component Styles
+ */
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -57,4 +74,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SortModal;
+export default FilterModal;

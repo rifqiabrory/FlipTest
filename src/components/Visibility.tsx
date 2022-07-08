@@ -3,7 +3,7 @@ import { View, ViewStyle } from "react-native";
 import styles from '../styles';
 
 /**
- * VisibilityProps's Interface
+ * Visibility Props's Interface
  */
 interface VisibilityProps {
     visible: boolean,
@@ -13,10 +13,12 @@ interface VisibilityProps {
 /**
  * Visibility Component
  */
-export const Visibility: React.FC<PropsWithChildren<VisibilityProps>> = ({ visible, ...rest }) => {
+const Visibility: React.FC<PropsWithChildren<VisibilityProps>> = ({ visible, ...rest }) => {
     return (
-        <View style={ visible ? rest.style : styles.hide}>
+        <View style={visible ? rest.style : styles.hide}>
             {rest.children}
         </View>
     )
 }
+
+export default Visibility

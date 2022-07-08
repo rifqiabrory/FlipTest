@@ -2,22 +2,34 @@ import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TransactionDetail from './features/transaction-detail/TransactionDetail';
 import TransactionList from './features/transaction-list/TransactionList';
-import { SortModal } from './components';
+import { FilterModal } from './components';
 import { StackParams } from './types';
 import { Colors } from './utilities';
 
+/**
+ * Create Stack's Navigator
+ */
 const Stack = createNativeStackNavigator<StackParams>();
 
+/**
+ * Main Application
+ */
 const Main = () => {
   return (
     <Stack.Navigator initialRouteName='Transaction'>
       <Stack.Screen name="Transaction" component={TransactionList} options={{ headerShown: false }} />
-      <Stack.Screen name="TransactionDetail" component={TransactionDetail} options={{ title: "Transaction Detail", headerTitleStyle: { color: Colors.black }, headerTintColor: Colors.grey}} />
+      <Stack.Screen name="TransactionDetail" component={TransactionDetail} options={{
+        title: "Transaction Detail",
+        headerTintColor: Colors.grey,
+        headerTitleStyle: {
+          color: Colors.black
+        },
+      }} />
       <Stack.Group>
-        <Stack.Screen name="SortModal" component={SortModal} options={{
-            headerShown: false,
-            animation: 'fade',
-            presentation: 'transparentModal',
+        <Stack.Screen name="FilterModal" component={FilterModal} options={{
+          headerShown: false,
+          animation: 'fade',
+          presentation: 'transparentModal',
         }} />
       </Stack.Group>
     </Stack.Navigator>

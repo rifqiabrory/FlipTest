@@ -3,39 +3,63 @@ import { Text, Pressable, FlatList, ActivityIndicator, ListRenderItemInfo } from
 import { useDispatch, useSelector } from "react-redux";
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { retriveTransactions, transactions } from "./transactionsSlice";
-import { SearchBar, ListItem, Error } from "../../components";
+import { SearchBar, ErrorState } from "../../components";
 import { StackParams, Transaction } from "../../types";
-import { NO_DATA_AVAILABLE, RETRY } from "../../utilities";
+import { Strings } from "../../utilities";
 import { AppDispatch } from "../../app/store";
+import { ListItem } from "./ListItem";
 import styles from '../../styles';
 
+/**
+ * Transaction List Props
+ */
 type Props = NativeStackScreenProps<StackParams, 'Transaction'>
 
+/**
+ * Transaction List Screen
+ */
 const TransactionList = ({ route, navigation }: Props) => {
+    /**
+     * Hook's
+     */
     const { dataSource, loading, error } = useSelector(transactions);
-    const dispatch = useDispatch<AppDispatch>()
+    const dispatch = useDispatch<AppDispatch>();
 
+    /**
+     * useEffect Hook
+     * @description Fetching data
+     */
     useEffect(() => {
         dispatch(retriveTransactions())
-    }, [route])
+    }, [route]);
 
+    /**
+     * Render Items Method
+     * @param item - Transaction
+     */
     const _renderItems = ({ item }: ListRenderItemInfo<Transaction>) => {
-        return <ListItem {...{item}} onPressItem={() => navigation.navigate('TransactionDetail', { transactionID: item.id })} />
+        return <ListItem {...{ item }} onPressItem={() => navigation.navigate('TransactionDetail', { transactionID: item.id })} />
     }
 
-    if(loading) {
+    /**
+     * Loading Validation UI
+     */
+    if (loading) {
         return <ActivityIndicator size="small" style={styles.loading} />
     }
-    
-    if(error){
+
+    /**
+     * Error Validation UI
+     */
+    if (error) {
         return (
-            <Error message={error} style={{ justifyContent: 'space-around'}}>
+            <ErrorState message={error} style={{ justifyContent: 'space-around' }}>
                 <Pressable style={styles.retryButtton} onPress={() => {
                     dispatch(retriveTransactions())
                 }}>
-                    <Text style={styles.retryLabel}>{RETRY}</Text>
+                    <Text style={styles.retryLabel}>{Strings.RETRY}</Text>
                 </Pressable>
-            </Error>
+            </ErrorState>
         )
     }
 
@@ -47,13 +71,13 @@ const TransactionList = ({ route, navigation }: Props) => {
             scrollEventThrottle={16}
             stickyHeaderIndices={[0]}
             renderItem={_renderItems}
+            stickyHeaderHiddenOnScroll
             keyExtractor={item => item.id}
-            stickyHeaderHiddenOnScroll={true}
-            scrollIndicatorInsets={{ top: 50 }}
+            scrollIndicatorInsets={{ top: 42 }}
             contentContainerStyle={{ paddingHorizontal: 8 }}
             ListHeaderComponentStyle={{ marginHorizontal: -8 }}
             ListHeaderComponent={SearchBar}
-            ListEmptyComponent={<Error message={NO_DATA_AVAILABLE} />}
+            ListEmptyComponent={<ErrorState message={Strings.NO_DATA_AVAILABLE} />}
         />
     )
 }

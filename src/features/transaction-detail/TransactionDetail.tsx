@@ -1,38 +1,52 @@
 import React, { useCallback } from "react";
 import { Text, View, Alert, Image, Pressable, StyleSheet, ScrollView } from "react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import Clipboard from '@react-native-clipboard/clipboard';
-import Utilities, { Colors, ARROW_DOWN_ICON, ARROW_RIGHT_ICON, COPY_ICON } from "../../utilities";
+import { useClipboard } from '@react-native-clipboard/clipboard';
+import Utilities, { Colors, Strings, ARROW_DOWN_ICON, ARROW_RIGHT_ICON, COPY_ICON } from "../../utilities";
 import { useTransactionDetail, useToggle } from "../../hooks";
 import { Divider, Visibility } from "../../components";
 import { StackParams } from "../../types";
 import styles from "../../styles";
 
+/**
+ * Transaction Detail Props
+ */
 type Props = NativeStackScreenProps<StackParams, 'TransactionDetail'>
 
-const TransactionDetail: React.FC<Props> = ({ route, navigation }) => {
+/**
+ * Transaction Detail Screen
+ */
+const TransactionDetail: React.FC<Props> = ({ route }) => {
+    /**
+     * Hook's
+     */
     const { transactionID } = route.params;
     const [visible, toggle] = useToggle(false);
+    const [copy, setCopiedValue] = useClipboard();
     const { transaction } = useTransactionDetail(transactionID);
-    
+
+    /**
+     * onCopyToClipboard Method
+     * @description Copy data to clipboard
+     */
     const _onCopyToClipboard = useCallback(() => {
-        Clipboard.setString(transactionID);
-        Alert.alert("Berhasil Salin ID Transaksi")
+        setCopiedValue(transactionID);
+        Alert.alert(Strings.COPIED);
     }, []);
 
     return (
         <ScrollView style={styles.container}>
             <View style={transactionDetailStyles.box}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={[transactionDetailStyles.label, { paddingHorizontal: 14, paddingVertical: 24 }]}>{`ID TRANSAKSI:#${transaction?.id}`}</Text>
+                    <Text style={[transactionDetailStyles.label, { paddingHorizontal: 14, paddingVertical: 24 }]}>{Strings.ID_TRANSAKSI_LABEL + "" + transaction?.id}</Text>
                     <Pressable onPress={_onCopyToClipboard}><Image source={COPY_ICON} style={[styles.icon, { tintColor: Colors.warm }]} /></Pressable>
                 </View>
                 <Divider />
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 14, paddingVertical: 24 }}>
-                    <Text style={transactionDetailStyles.label}>DETAIL TRANSAKSI</Text>
-                    <Pressable onPress={toggle} style={{ flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={transactionDetailStyles.label}>{Strings.DETAIL_TRANSAKSI_LABEL}</Text>
+                    <Pressable onPress={toggle} style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={[transactionDetailStyles.sublabel, { color: Colors.warm, paddingRight: 5 }]}>{visible ? 'Tutup' : 'Detail'}</Text>
-                        <Image source={ARROW_DOWN_ICON} style={[styles.icon, { tintColor: Colors.warm, transform: [{rotate: visible ? '180deg' : '0deg' }]}]} />
+                        <Image source={ARROW_DOWN_ICON} style={[styles.icon, { tintColor: Colors.warm, transform: [{ rotate: visible ? '180deg' : '0deg' }] }]} />
                     </Pressable>
                 </View>
                 <Divider />
@@ -48,22 +62,22 @@ const TransactionDetail: React.FC<Props> = ({ route, navigation }) => {
                             <Text style={transactionDetailStyles.sublabel}>{transaction?.account_number}</Text>
                         </View>
                         <View style={{ flex: 0.3 }}>
-                            <Text style={transactionDetailStyles.label}>NOMINAL</Text>
-                            <Text style={transactionDetailStyles.sublabel}>{ transaction?.amount ? Utilities.currencyFormat(transaction?.amount.toString()) : null}</Text>
+                            <Text style={transactionDetailStyles.label}>{Strings.NOMINAL_LABEL}</Text>
+                            <Text style={transactionDetailStyles.sublabel}>{transaction?.amount ? Utilities.currencyFormat(transaction?.amount.toString()) : null}</Text>
                         </View>
                     </View>
                     <View style={transactionDetailStyles.item}>
                         <View style={{ flex: 1 }}>
-                            <Text style={transactionDetailStyles.label}>BERITA TRANSFER</Text>
+                            <Text style={transactionDetailStyles.label}>{Strings.BERITA_TRANSFER_LABEL}</Text>
                             <Text style={transactionDetailStyles.sublabel}>{transaction?.remark}</Text>
                         </View>
                         <View style={{ flex: 0.3 }}>
-                            <Text style={transactionDetailStyles.label}>KODE UNIK</Text>
+                            <Text style={transactionDetailStyles.label}>{Strings.KODE_UNIK_LABEL}</Text>
                             <Text style={transactionDetailStyles.sublabel}>{transaction?.unique_code}</Text>
                         </View>
                     </View>
                     <View>
-                        <Text style={transactionDetailStyles.label}>WAKTU DIBUAT</Text>
+                        <Text style={transactionDetailStyles.label}>{Strings.WAKTU_DIBUAT_LABEL}</Text>
                         <Text style={transactionDetailStyles.sublabel}>{transaction?.created_at ? Utilities.parseDateTime(transaction.created_at) : null}</Text>
                     </View>
                 </Visibility>
@@ -72,11 +86,31 @@ const TransactionDetail: React.FC<Props> = ({ route, navigation }) => {
     )
 }
 
+/**
+ * Transaction Detail Screen Styles
+ */
 const transactionDetailStyles = StyleSheet.create({
-    box: { backgroundColor: Colors.white, marginTop: 14},
-    label: { fontWeight: '700', fontSize: 13, color: Colors.black, lineHeight: 18 },
-    sublabel: { fontWeight: '400', fontSize: 12, color: Colors.black, lineHeight: 18 },
-    item: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 8 }
+    box: {
+        marginTop: 14,
+        backgroundColor: Colors.white,
+    },
+    label: {
+        fontSize: 13,
+        lineHeight: 18,
+        fontWeight: '700',
+        color: Colors.black,
+    },
+    sublabel: {
+        fontSize: 12,
+        lineHeight: 18,
+        fontWeight: '400',
+        color: Colors.black,
+    },
+    item: {
+        paddingVertical: 8,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    }
 })
 
 export default TransactionDetail;

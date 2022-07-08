@@ -1,5 +1,16 @@
 import React from 'react';
-import { View } from "react-native";
-import { Colors } from '../utilities/Colors';
+import { View, ViewStyle } from "react-native";
+import styles from '../styles';
 
-export const Divider: React.FC = () => <View style={{height: 0.25, backgroundColor: Colors.softGrey}} />
+/**
+ * Divider Props's Interface
+ */
+interface DividerProps {
+    style?: ViewStyle
+}
+
+/**
+ * Divider Component
+ */
+const Divider: React.FC<DividerProps> = ({ style }) => <View style={[styles.divider, style]} />
+export default Divider;

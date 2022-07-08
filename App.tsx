@@ -1,16 +1,20 @@
 import React from 'react';
-import { SafeAreaView, StatusBar } from 'react-native';
-import { Provider } from 'react-redux';
+import { SafeAreaView, StatusBar, useColorScheme } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
 import { store } from './src/app/store';
 import Main from './src/Main';
 
-const App = () => {
+/**
+ * Main Application
+ */
+const App: React.FC = () => {
+  const isDarkMode = useColorScheme() === 'dark';
   return (
     <Provider store={store} >
       <NavigationContainer>
         <SafeAreaView style={{ flex: 1 }}>
-          <StatusBar barStyle="dark-content" />
+          <StatusBar barStyle={ isDarkMode ? "light-content" : "dark-content"} />
           <Main />
         </SafeAreaView>
       </NavigationContainer>

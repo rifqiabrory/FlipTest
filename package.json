@@ -1,10 +1,20 @@
 {
   "name": "FlipTest",
-  "version": "0.0.1",
+  "version": "1.2.0",
   "private": true,
+  "description": "Flip Coding Test",
+  "author": {
+    "name": "Rifqi Abrory",
+    "email": "rifqi.upm@gmail.com"
+  },
+  "readme": "https://github.com/rifqiabrory/FlipTest/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rifqiabrory/FlipTest.git"
+  },
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "android": "npx react-native run-android",
+    "ios": "npx react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
